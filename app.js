@@ -22,7 +22,30 @@ UI.prototype.addBookToList = function(book) {
   list.appendChild(row);
 
 }
+//show alert
 
+UI.prototype.showAlert = function(msg, className) {
+  // create div
+  const div = document.createElement('div');
+  // add class
+  div.className = `alert ${className}`;
+  //add text message+
+  div.appendChild(document.createTextNode(msg));
+  // get parent
+  const container = document.querySelector('.container');
+  // get form
+  const form = document.querySelector('#book-form');
+  // insert alert
+  container.insertBefore(div, form);
+
+  //timeout after 3s
+  setTimeout(function(){
+    document.querySelector('.alert').remove();
+  }, 3000);
+};
+
+
+// Clear fields
 UI.prototype.clearFields = function(){
   document.getElementById('title').value = '';
   document.getElementById('author').value = '';
@@ -43,13 +66,25 @@ document.getElementById('book-form').addEventListener('submit', function(e){
 
   // Instantiate UK
   const ui = new UI();
-  // add book to list
 
-  ui.addBookToList(book);
+  if(title === '' || author === '' || isbn === ''){
+    
+    //Error alert
+    ui.showAlert('Please fill in all fields', 'error');
 
-  // clear fields
+  } else {
 
-  ui.clearFields();
+    // add book to list
+    ui.addBookToList(book);
+    ui.showAlert('Book has been added to list', 'succes');
+
+    // clear fields
+    ui.clearFields();
+  }
+  
+  
+
+
 
   e.preventDefault();
 });
